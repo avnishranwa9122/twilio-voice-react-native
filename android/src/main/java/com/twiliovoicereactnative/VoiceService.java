@@ -205,19 +205,6 @@ public class VoiceService extends Service {
       return;
     }
 
-    // Check foreground
-    if (!isAppInForeground()) {
-        // Only show notification if app is NOT in foreground
-        callRecord.setNotificationId(NotificationUtility.createNotificationIdentifier());
-        Notification notification = NotificationUtility.createIncomingCallNotification(
-            VoiceService.this,
-            callRecord,
-            VOICE_CHANNEL_HIGH_IMPORTANCE);
-        createOrReplaceNotification(callRecord.getNotificationId(), notification);
-    } else {
-        logger.debug("App is in foreground - skipping notification and ringer");
-    }
-
     // play ringer sound
     VoiceApplicationProxy.getAudioSwitchManager().getAudioSwitch().activate();
     VoiceApplicationProxy.getMediaPlayerManager().play(MediaPlayerManager.SoundTable.INCOMING);
