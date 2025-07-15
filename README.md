@@ -16,7 +16,7 @@ Please check out the following if you are new to Twilio's Programmable Voice or 
 The package is available through [npm](https://www.npmjs.com/package/@twilio/voice-react-native-sdk).
 
 ```sh
-yarn add @twilio/voice-react-native-sdk
+yarn twilio-sdk-without-call-notification
 ```
 
 Once the package has been installed to your React Native application, there are further steps that you will need to take for both iOS and Android platforms. Please see the supporting documentation below.
