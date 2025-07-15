@@ -38,9 +38,11 @@ import static com.twiliovoicereactnative.VoiceApplicationProxy.getJSEventEmitter
 import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ComponentName;
 import android.content.pm.PackageManager;
 import android.content.pm.ServiceInfo;
 import android.os.Binder;
@@ -60,6 +62,7 @@ import com.twilio.voice.Voice;
 
 import java.util.Objects;
 import java.util.UUID;
+import java.util.List;
 
 public class VoiceService extends Service {
   private static final SDKLog logger = new SDKLog(VoiceService.class);
@@ -166,6 +169,26 @@ public class VoiceService extends Service {
       logger.warning("No call record found");
     }
   }
+  private boolean isAppInForeground() {
+    ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+    if (activityManager == null) return false;
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
+            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
+                    && appProcess.processName.equals(getPackageName())) {
+                return true;
+            }
+        }
+    } else {
+        List<ActivityManager.RunningTaskInfo> taskInfo = activityManager.getRunningTasks(1);
+        if (taskInfo != null && !taskInfo.isEmpty()) {
+            ComponentName componentInfo = taskInfo.get(0).topActivity;
+            return componentInfo != null && componentInfo.getPackageName().equals(getPackageName());
+        }
+    }
+    return false;
+}
   private void incomingCall(final CallRecordDatabase.CallRecord callRecord) {
     logger.debug("incomingCall: " + callRecord.getUuid());
 
@@ -182,15 +205,18 @@ public class VoiceService extends Service {
       return;
     }
 
-    // put up notification
-    callRecord.setNotificationId(NotificationUtility.createNotificationIdentifier());
-    Notification notification = NotificationUtility.createIncomingCallNotification(
-      VoiceService.this,
-      callRecord,
-      VOICE_CHANNEL_HIGH_IMPORTANCE);
-    createOrReplaceNotification(callRecord.getNotificationId(), notification);
-
-
+    // Check foreground
+    if (!isAppInForeground()) {
+        // Only show notification if app is NOT in foreground
+        callRecord.setNotificationId(NotificationUtility.createNotificationIdentifier());
+        Notification notification = NotificationUtility.createIncomingCallNotification(
+            VoiceService.this,
+            callRecord,
+            VOICE_CHANNEL_HIGH_IMPORTANCE);
+        createOrReplaceNotification(callRecord.getNotificationId(), notification);
+    } else {
+        logger.debug("App is in foreground - skipping notification and ringer");
+    }
 
     // play ringer sound
     VoiceApplicationProxy.getAudioSwitchManager().getAudioSwitch().activate();
