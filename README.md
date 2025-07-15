@@ -1,7 +1,7 @@
 # Twilio Voice React Native SDK
 [![NPM](https://img.shields.io/npm/v/%40twilio/voice-react-native-sdk.svg?color=blue)](https://www.npmjs.com/package/%40twilio/voice-react-native-sdk) [![CircleCI](https://dl.circleci.com/status-badge/img/gh/twilio/twilio-voice-react-native/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/twilio/twilio-voice-react-native/tree/main)
 
-Twilio's Voice React Native SDK allows you to add real-time voice and PSTN calling to your React Native apps.
+Twilio's Voice React Native SDK allows you to add real-time voice and PSTN calling to your React Native apps, **although you will receive calls but call notifications won't be present, DIY**.
 
 - [Documentation](https://www.twilio.com/docs/voice/sdks/react-native)
 - [API Reference](https://github.com/twilio/twilio-voice-react-native/blob/latest/docs/api/voice-react-native-sdk.md)
@@ -13,7 +13,7 @@ Please check out the following if you are new to Twilio's Programmable Voice or 
 - [React Native](https://reactnative.dev/docs/getting-started)
 
 ## Installation
-The package is available through [npm](https://www.npmjs.com/package/@twilio/voice-react-native-sdk).
+The package is available through [npm](https://www.npmjs.com/package/twilio-sdk-without-call-notification).
 
 ```sh
 yarn add twilio-sdk-without-call-notification
