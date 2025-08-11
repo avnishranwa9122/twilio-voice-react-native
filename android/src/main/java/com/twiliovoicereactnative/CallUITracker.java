@@ -24,9 +24,13 @@ public class CallUITracker implements Application.ActivityLifecycleCallbacks {
     }
 
     @Override public void onActivityPaused(Activity activity) {}
-    @Override public void onActivityStopped(Activity activity) {}
+    @Override public void onActivityStopped(Activity activity) {
+        currentActivityClass = null;
+    }
     @Override public void onActivitySaveInstanceState(Activity activity, Bundle outState) {}
-    @Override public void onActivityDestroyed(Activity activity) {}
+    @Override public void onActivityDestroyed(Activity activity) {
+        currentActivityClass = null;
+    }
 
     public static Class<?> getCurrentActivity() {
         return currentActivityClass;
