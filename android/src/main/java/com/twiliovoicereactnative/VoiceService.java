@@ -169,26 +169,7 @@ public class VoiceService extends Service {
       logger.warning("No call record found");
     }
   }
-  private boolean isAppInForeground() {
-    ActivityManager activityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-    if (activityManager == null) return false;
 
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-        for (ActivityManager.RunningAppProcessInfo appProcess : activityManager.getRunningAppProcesses()) {
-            if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND
-                    && appProcess.processName.equals(getPackageName())) {
-                return true;
-            }
-        }
-    } else {
-        List<ActivityManager.RunningTaskInfo> taskInfo = activityManager.getRunningTasks(1);
-        if (taskInfo != null && !taskInfo.isEmpty()) {
-            ComponentName componentInfo = taskInfo.get(0).topActivity;
-            return componentInfo != null && componentInfo.getPackageName().equals(getPackageName());
-        }
-    }
-    return false;
-}
   private void incomingCall(final CallRecordDatabase.CallRecord callRecord) {
     logger.debug("incomingCall: " + callRecord.getUuid());
 
@@ -204,6 +185,13 @@ public class VoiceService extends Service {
       logger.warning("WARNING: Incoming call cannot be handled, microphone permission not granted");
       return;
     }
+
+    callRecord.setNotificationId(NotificationUtility.createNotificationIdentifier());
+    Notification notification = NotificationUtility.createIncomingCallNotification(
+        VoiceService.this,
+        callRecord,
+        VOICE_CHANNEL_HIGH_IMPORTANCE);
+    createOrReplaceNotification(callRecord.getNotificationId(), notification);
 
     // play ringer sound
     VoiceApplicationProxy.getAudioSwitchManager().getAudioSwitch().activate();
