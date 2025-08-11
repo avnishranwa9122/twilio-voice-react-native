@@ -112,13 +112,6 @@ public class VoiceApplicationProxy {
   }
 
   static Class<?> getMainActivityClass() {
-    // Check tracker first
-    Class<?> current = CallUITracker.getCurrentActivity();
-    if (current != null) {
-        return current; // Open the currently visible activity
-    }
-
-    // Fallback to default main activity logic
     Context context = VoiceApplicationProxy.instance.context;
     String packageName = context.getPackageName();
     Intent launchIntent = context.getPackageManager().getLaunchIntentForPackage(packageName);
