@@ -335,11 +335,11 @@ public class VoiceService extends Service {
     logger.debug("foregroundAndDeprioritizeIncomingCallNotification: " + callRecord.getUuid());
 
     // cancel existing notification & put up in call
-    Notification notification = NotificationUtility.createIncomingCallNotification(
-      VoiceService.this,
-      callRecord,
-      VOICE_CHANNEL_DEFAULT_IMPORTANCE);
-    createOrReplaceNotification(callRecord.getNotificationId(), notification);
+    // Notification notification = NotificationUtility.createIncomingCallNotification(
+    //   VoiceService.this,
+    //   callRecord,
+    //   VOICE_CHANNEL_DEFAULT_IMPORTANCE);
+    // createOrReplaceNotification(callRecord.getNotificationId(), notification);
 
     // stop active sound (if any)
     VoiceApplicationProxy.getMediaPlayerManager().stop();
