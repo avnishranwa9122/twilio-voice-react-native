@@ -169,7 +169,7 @@ class NotificationUtility {
     NotificationCompat.Builder builder = constructNotificationBuilder(context, channelImportance)
       .setSmallIcon(notificationResource.getSmallIconId())
       .setCategory(Notification.CATEGORY_CALL)
-      .setAutoCancel(true)
+      .setAutoCancel(false)
       .setContentIntent(piForegroundIntent)
       .addPerson(incomingCaller)
       .setStyle(NotificationCompat.CallStyle.forIncomingCall(

@@ -334,7 +334,7 @@ public class VoiceService extends Service {
   private void foregroundAndDeprioritizeIncomingCallNotification(final CallRecordDatabase.CallRecord callRecord) {
     logger.debug("foregroundAndDeprioritizeIncomingCallNotification: " + callRecord.getUuid());
 
-    cancel existing notification & put up in call
+    // cancel existing notification & put up in call
     Notification notification = NotificationUtility.createIncomingCallNotification(
       VoiceService.this,
       callRecord,
