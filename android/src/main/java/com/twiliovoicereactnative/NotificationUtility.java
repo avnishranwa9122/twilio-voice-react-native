@@ -34,6 +34,7 @@ import com.twiliovoicereactnative.CallRecordDatabase.CallRecord;
 
 class NotificationUtility {
   private static final SecureRandom secureRandom = new SecureRandom();
+  private static final SDKLog logger = new SDKLog(NotificationUtility.class);
 
   private static class NotificationResource {
     enum Type { INCOMING, OUTGOING, ANSWERED }
@@ -174,6 +175,8 @@ class NotificationUtility {
       .addPerson(incomingCaller)
       .setStyle(NotificationCompat.CallStyle.forIncomingCall(
         incomingCaller, piRejectIntent, piAcceptIntent));
+
+    logger.debug("isFullscreenIntentEnabled", "Enabled: " + isFullscreenIntentEnabled(context));
     if (isFullscreenIntentEnabled(context)) {
       builder.setFullScreenIntent(piForegroundIntent, true);
     }
