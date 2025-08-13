@@ -176,7 +176,7 @@ class NotificationUtility {
       .setStyle(NotificationCompat.CallStyle.forIncomingCall(
         incomingCaller, piRejectIntent, piAcceptIntent));
 
-    logger.debug("isFullscreenIntentEnabled", "Enabled: " + isFullscreenIntentEnabled(context));
+    logger.debug("isFullscreenIntentEnabled Enabled: " + isFullscreenIntentEnabled(context));
     if (isFullscreenIntentEnabled(context)) {
       builder.setFullScreenIntent(piForegroundIntent, true);
     }
