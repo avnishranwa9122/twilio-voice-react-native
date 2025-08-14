@@ -1,6 +1,5 @@
 package com.twiliovoicereactnative;
 
-
 import static com.twiliovoicereactnative.CommonConstants.CallInviteEventKeyCallSid;
 import static com.twiliovoicereactnative.CommonConstants.CallInviteEventKeyType;
 import static com.twiliovoicereactnative.CommonConstants.CallInviteEventTypeValueAccepted;
@@ -59,6 +58,7 @@ import com.twilio.voice.AcceptOptions;
 import com.twilio.voice.Call;
 import com.twilio.voice.ConnectOptions;
 import com.twilio.voice.Voice;
+import com.twilio.audioswitch.AudioDevice;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -196,6 +196,7 @@ public class VoiceService extends Service {
     // play ringer sound
     VoiceApplicationProxy.getAudioSwitchManager().getAudioSwitch().activate();
     VoiceApplicationProxy.getMediaPlayerManager().play(MediaPlayerManager.SoundTable.INCOMING);
+    VoiceApplicationProxy.getAudioSwitchManager().getAudioSwitch().selectDevice(new AudioDevice.Speakerphone());
 
     // trigger JS layer
     sendJSEvent(
@@ -233,6 +234,7 @@ public class VoiceService extends Service {
 
     // stop ringer sound
     VoiceApplicationProxy.getMediaPlayerManager().stop();
+    VoiceApplicationProxy.getAudioSwitchManager().getAudioSwitch().selectDevice(new AudioDevice.Earpiece());
 
     // accept call
     AcceptOptions acceptOptions = new AcceptOptions.Builder()
